@@ -1,0 +1,24 @@
+name: "CloudFormation Create Change Set"
+description: "Action that creates a CloudFormation change set"
+inputs:
+  STACK_NAME:
+    description: "CloudFormation stack name"
+    required: true
+  AWS_ACCESS_KEY_ID:
+    description: "AWS_ACCESS_KEY_ID"
+    required: true
+  AWS_SECRET_ACCESS_KEY:
+    description: "AWS_SECRET_ACCESS_KEY"
+    required: true
+  AWS_REGION:
+    description: "AWS_REGION"
+    required: true
+  TEMPLATE_FILE:
+    description: "Path to CloudFormation template"
+    required: true
+runs:
+  using: "node12"
+  main: "dist/index.js"
+branding:
+  icon: "upload-cloud"
+  color: "green"

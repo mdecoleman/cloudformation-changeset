@@ -1,0 +1,38 @@
+{
+  "name": "cloudformation-create-changeset",
+  "version": "1.0.0",
+  "description": "Action that creates a CloudFormation change set",
+  "main": "index.js",
+  "scripts": {
+    "package": "npx ncc build src/main.js -o dist",
+    "test": "npx mocha ./**/*.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mdecoleman/cloudformation-create-changeset.git"
+  },
+  "keywords": [
+    "github",
+    "actions",
+    "pull request",
+    "branch name"
+  ],
+  "bugs": {
+    "url": "https://github.com/mdecoleman/cloudformation-create-changesetissues"
+  },
+  "homepage": "https://github.com/mdecoleman/cloudformation-create-changeset#readme",
+  "author": "Matthew Coleman <matthewdecoleman@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "^1.2.0",
+    "aws-sdk": "^2.586.0",
+    "uuid": "^3.3.3"
+  },
+  "devDependencies": {
+    "@zeit/ncc": "^0.20.5",
+    "dotenv": "^8.2.0",
+    "mocha": "^6.2.2",
+    "should": "^13.2.3",
+    "sinon": "^7.5.0"
+  }
+}

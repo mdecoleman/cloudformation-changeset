@@ -4446,11 +4446,12 @@ const { existsSync, readFileSync } = __webpack_require__(747);
 const uuidV4 = __webpack_require__(826);
 
 async function create() {
-  const STACK_NAME = core.getInput("STACK_NAME");
-  const TEMPLATE_FILE = core.getInput("TEMPLATE_FILE");
-  const AWS_ACCESS_KEY_ID = core.getInput("AWS_ACCESS_KEY_ID");
-  const AWS_SECRET_ACCESS_KEY = core.getInput("AWS_SECRET_ACCESS_KEY");
-  const AWS_REGION = core.getInput("AWS_REGION");
+  const STACK_NAME = core.getInput("stack_name");
+  const TEMPLATE_FILE = core.getInput("template_file");
+  const AWS_ACCESS_KEY_ID = core.getInput("aws_access_key_id");
+  const AWS_SECRET_ACCESS_KEY = core.getInput("aws_secret_access_key");
+  const AWS_REGION = core.getInput("aws_region");
+  const PARAMETERS = core.getInput("parameters");
 
   if (existsSync(TEMPLATE_FILE)) {
     const file = await readFileSync(TEMPLATE_FILE);
@@ -4466,12 +4467,24 @@ async function create() {
       ChangeSetType: "CREATE",
       ChangeSetName: `${STACK_NAME}-${uuidV4()}`,
       StackName: STACK_NAME,
-      TemplateBody: file.toString()
+      TemplateBody: file.toString(),
+      Parameters: []
     };
+
+    if (PARAMETERS && PARAMETERS.trim() !== "") {
+      const keyValues = PARAMETERS.split(",");
+
+      keyValues.forEach(kv => {
+        const values = kv.split("=");
+        params.Parameters.push({
+          ParameterKey: values[0],
+          ParameterValue: values[1]
+        });
+      });
+    }
 
     const response = await cfn.createChangeSet(params).promise();
 
-    core.info(`Changeset created: ${response.Id}`);
     core.setOutput("changeset_id", response.Id);
   } else {
     core.setFailed(`${TEMPLATE_FILE} not found`);
@@ -4480,15 +4493,14 @@ async function create() {
 
 async function run() {
   try {
-    const METHOD = core.getInput("METHOD");
+    const METHOD = core.getInput("method");
 
     switch (METHOD) {
-      case "CREATE":
       case "create":
         create();
         break;
       default:
-        core.setFailed(`METHOD ${METHOD} not supported`);
+        core.setFailed(`method ${METHOD} not supported`);
     }
   } catch (error) {
     core.error(error);

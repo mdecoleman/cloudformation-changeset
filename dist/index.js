@@ -509,7 +509,7 @@ async function run() {
   try {
     const inputs = getInputs();
 
-    switch (inputs.METHOD) {
+    switch (inputs.method) {
       case "create":
         const { id, name } = await createChangeSet(inputs);
 
@@ -525,7 +525,7 @@ async function run() {
 
         break;
       default:
-        core.setFailed(`method ${METHOD} not supported`);
+        core.setFailed(`method ${inputs.method} not supported`);
     }
   } catch (error) {
     core.error(error);

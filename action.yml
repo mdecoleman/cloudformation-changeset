@@ -19,6 +19,9 @@ inputs:
   template_file:
     description: "Path to CloudFormation template"
     required: true
+  parameters:
+    description: Parameters for the template
+    required: false
 outputs:
   changeset_id:
     description: "The changeset id"

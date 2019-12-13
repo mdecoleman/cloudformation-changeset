@@ -9,6 +9,7 @@ async function create() {
   const AWS_ACCESS_KEY_ID = core.getInput("aws_access_key_id");
   const AWS_SECRET_ACCESS_KEY = core.getInput("aws_secret_access_key");
   const AWS_REGION = core.getInput("aws_region");
+  const PARAMETERS = core.getInput("parameters");
 
   if (existsSync(TEMPLATE_FILE)) {
     const file = await readFileSync(TEMPLATE_FILE);
@@ -24,8 +25,21 @@ async function create() {
       ChangeSetType: "CREATE",
       ChangeSetName: `${STACK_NAME}-${uuidV4()}`,
       StackName: STACK_NAME,
-      TemplateBody: file.toString()
+      TemplateBody: file.toString(),
+      Parameters: []
     };
+
+    if (PARAMETERS && PARAMETERS.trim() !== "") {
+      const keyValues = PARAMETERS.split(",");
+
+      keyValues.forEach(kv => {
+        const values = kv.split("=");
+        params.Parameters.push({
+          ParameterKey: values[0],
+          ParameterValue: values[1]
+        });
+      });
+    }
 
     const response = await cfn.createChangeSet(params).promise();
 

@@ -2,13 +2,23 @@ AWSTemplateFormatVersion: 2010-09-09
 Description: >-
   Test template for deploying cfn changeset
 
+Parameters:
+  Runtime:
+    Description: Runtime
+    Type: String
+    Default: nodejs8.10
+  Role:
+    Description: Role
+    Type: String
+    Default: arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
 Resources:
   TestResource:
     Type: AWS::Lambda::Function
     Properties:
-      Runtime: nodejs8.10
+      Runtime: !Ref Runtime
       Handler: index.handler
-      Role: arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Role: !Ref Role
       Code:
         ZipFile: |
           var aws = require('aws-sdk');

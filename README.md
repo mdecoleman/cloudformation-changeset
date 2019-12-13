@@ -17,6 +17,7 @@ Currently only `create` change set is implemented
     aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
     aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     aws_region: "eu-west-1"
+    parameters: Runtime=nodejs8.10,Role=arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
 ```
 
 For documentation of available inputs and outputs see [action.yml](action.yml)

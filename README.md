@@ -4,22 +4,22 @@ GitHub Action that creates, updates, deletes and applies CloudFormation change s
 
 # Methods
 
-Currently only `CREATE` change set is implemented
+Currently only `create` change set is implemented
 
 # Usage
 
 ```yaml
 - uses: mdecoleman/cloudformation-changeset@v1
-  id: cfn
   with:
-    METHOD: CREATE
-    STACK_NAME: "some-stack-name"
-    AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    AWS_REGION: "eu-west-1"
-    TEMPLATE_FILE: "./path/to/template.yml"
-- run: echo ${{ steps.cfn.outputs.changeset_id }}
+    method: create
+    stack_name: "some-stack"
+    template_file: "./path/to/template.yml"
+    aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    aws_region: "eu-west-1"
 ```
+
+For documentation of available inputs and outputs see [action.yml](action.yml)
 
 # License
 

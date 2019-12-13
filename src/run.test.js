@@ -24,12 +24,12 @@ describe("run", async function() {
   });
 
   it("should fail when template file not found", async function() {
-    stubSetInput("METHOD", "CREATE");
-    stubSetInput("STACK_NAME", STACK_NAME);
-    stubSetInput("AWS_ACCESS_KEY_ID", process.env.AWS_ACCESS_KEY_ID);
-    stubSetInput("AWS_SECRET_ACCESS_KEY", process.env.AWS_SECRET_ACCESS_KEY);
-    stubSetInput("AWS_REGION", "eu-west-1");
-    stubSetInput("TEMPLATE_FILE", "./some-file.yml");
+    stubSetInput("method", "create");
+    stubSetInput("stack_name", STACK_NAME);
+    stubSetInput("aws_access_key_id", process.env.AWS_ACCESS_KEY_ID);
+    stubSetInput("aws_secret_access_key", process.env.AWS_SECRET_ACCESS_KEY);
+    stubSetInput("aws_region", "eu-west-1");
+    stubSetInput("template_file", "./some-file.yml");
 
     let spy = sandbox.spy(core, "setFailed");
 
@@ -39,12 +39,12 @@ describe("run", async function() {
   });
 
   it("should set changeset_id output when succeeded", async function() {
-    stubSetInput("METHOD", "CREATE");
-    stubSetInput("STACK_NAME", STACK_NAME);
-    stubSetInput("AWS_ACCESS_KEY_ID", process.env.AWS_ACCESS_KEY_ID);
-    stubSetInput("AWS_SECRET_ACCESS_KEY", process.env.AWS_SECRET_ACCESS_KEY);
-    stubSetInput("AWS_REGION", "eu-west-1");
-    stubSetInput("TEMPLATE_FILE", "./tests/template.yml");
+    stubSetInput("method", "create");
+    stubSetInput("stack_name", STACK_NAME);
+    stubSetInput("aws_access_key_id", process.env.AWS_ACCESS_KEY_ID);
+    stubSetInput("aws_secret_access_key", process.env.AWS_SECRET_ACCESS_KEY);
+    stubSetInput("aws_region", "eu-west-1");
+    stubSetInput("template_file", "./tests/template.yml");
 
     let spy = sandbox.spy(core, "setOutput");
 

@@ -4,11 +4,11 @@ const { existsSync, readFileSync } = require("fs");
 const uuidV4 = require("uuid/v4");
 
 async function create() {
-  const STACK_NAME = core.getInput("STACK_NAME");
-  const TEMPLATE_FILE = core.getInput("TEMPLATE_FILE");
-  const AWS_ACCESS_KEY_ID = core.getInput("AWS_ACCESS_KEY_ID");
-  const AWS_SECRET_ACCESS_KEY = core.getInput("AWS_SECRET_ACCESS_KEY");
-  const AWS_REGION = core.getInput("AWS_REGION");
+  const STACK_NAME = core.getInput("stack_name");
+  const TEMPLATE_FILE = core.getInput("template_file");
+  const AWS_ACCESS_KEY_ID = core.getInput("aws_access_key_id");
+  const AWS_SECRET_ACCESS_KEY = core.getInput("aws_secret_access_key");
+  const AWS_REGION = core.getInput("aws_region");
 
   if (existsSync(TEMPLATE_FILE)) {
     const file = await readFileSync(TEMPLATE_FILE);
@@ -29,7 +29,6 @@ async function create() {
 
     const response = await cfn.createChangeSet(params).promise();
 
-    core.info(`Changeset created: ${response.Id}`);
     core.setOutput("changeset_id", response.Id);
   } else {
     core.setFailed(`${TEMPLATE_FILE} not found`);
@@ -38,15 +37,14 @@ async function create() {
 
 async function run() {
   try {
-    const METHOD = core.getInput("METHOD");
+    const METHOD = core.getInput("method");
 
     switch (METHOD) {
-      case "CREATE":
       case "create":
         create();
         break;
       default:
-        core.setFailed(`METHOD ${METHOD} not supported`);
+        core.setFailed(`method ${METHOD} not supported`);
     }
   } catch (error) {
     core.error(error);

@@ -1,24 +1,27 @@
 name: "CloudFormation Change Set"
 description: "GitHub Action that creates, updates, deletes and applies CloudFormation change sets"
 inputs:
-  METHOD:
+  method:
     description: "The action type"
     required: true
-  STACK_NAME:
+  stack_name:
     description: "CloudFormation stack name"
     required: true
-  AWS_ACCESS_KEY_ID:
-    description: "AWS_ACCESS_KEY_ID"
+  aws_access_key_id:
+    description: "aws_access_key_id"
     required: true
-  AWS_SECRET_ACCESS_KEY:
-    description: "AWS_SECRET_ACCESS_KEY"
+  aws_secret_access_key:
+    description: "aws_secret_access_key"
     required: true
-  AWS_REGION:
-    description: "AWS_REGION"
+  aws_region:
+    description: "aws_region"
     required: true
-  TEMPLATE_FILE:
+  template_file:
     description: "Path to CloudFormation template"
     required: true
+outputs:
+  changeset_id:
+    description: "The changeset id"
 runs:
   using: "node12"
   main: "dist/index.js"

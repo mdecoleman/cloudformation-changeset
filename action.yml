@@ -1,6 +1,9 @@
-name: "CloudFormation Create Change Set"
-description: "Action that creates a CloudFormation change set"
+name: "CloudFormation Change Set"
+description: "GitHub Action that creates, updates, deletes and applies CloudFormation change sets"
 inputs:
+  METHOD:
+    description: "The action type"
+    required: true
   STACK_NAME:
     description: "CloudFormation stack name"
     required: true

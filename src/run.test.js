@@ -24,6 +24,7 @@ describe("run", async function() {
   });
 
   it("should fail when template file not found", async function() {
+    stubSetInput("METHOD", "CREATE");
     stubSetInput("STACK_NAME", STACK_NAME);
     stubSetInput("AWS_ACCESS_KEY_ID", process.env.AWS_ACCESS_KEY_ID);
     stubSetInput("AWS_SECRET_ACCESS_KEY", process.env.AWS_SECRET_ACCESS_KEY);
@@ -38,6 +39,7 @@ describe("run", async function() {
   });
 
   it("should set changeset_id output when succeeded", async function() {
+    stubSetInput("METHOD", "CREATE");
     stubSetInput("STACK_NAME", STACK_NAME);
     stubSetInput("AWS_ACCESS_KEY_ID", process.env.AWS_ACCESS_KEY_ID);
     stubSetInput("AWS_SECRET_ACCESS_KEY", process.env.AWS_SECRET_ACCESS_KEY);

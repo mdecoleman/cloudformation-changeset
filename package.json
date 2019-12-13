@@ -1,7 +1,7 @@
 {
-  "name": "cloudformation-create-changeset",
+  "name": "cloudformation-changeset",
   "version": "1.0.0",
-  "description": "Action that creates a CloudFormation change set",
+  "description": "GitHub Action that creates, updates, deletes and applies CloudFormation change sets",
   "main": "index.js",
   "scripts": {
     "package": "npx ncc build src/main.js -o dist",

@@ -1,4 +1,6 @@
 const core = require("@actions/core");
+const { getInputs } = require("./inputs");
+
 const {
   createChangeSet,
   deleteChangeSet,
@@ -7,20 +9,22 @@ const {
 
 async function run() {
   try {
-    const METHOD = core.getInput("method");
+    const inputs = getInputs();
 
-    switch (METHOD) {
+    switch (inputs.METHOD) {
       case "create":
-        const { id, name } = await createChangeSet();
+        const { id, name } = await createChangeSet(inputs);
 
         core.setOutput("changeset_id", id);
         core.setOutput("changeset_name", name);
         break;
       case "delete":
-        await deleteChangeSet();
+        await deleteChangeSet(inputs);
+
         break;
       case "execute":
-        await executeChangeSet();
+        await executeChangeSet(inputs);
+
         break;
       default:
         core.setFailed(`method ${METHOD} not supported`);

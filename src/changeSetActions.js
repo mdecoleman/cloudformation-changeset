@@ -1,36 +1,37 @@
 const { existsSync, readFileSync } = require("fs");
 const CloudFormation = require("aws-sdk/clients/cloudformation");
-const core = require("@actions/core");
 const uuidV4 = require("uuid/v4");
 
-async function createChangeSet() {
-  const STACK_NAME = core.getInput("stack_name");
-  const TEMPLATE_FILE = core.getInput("template_file");
-  const AWS_ACCESS_KEY_ID = core.getInput("aws_access_key_id");
-  const AWS_SECRET_ACCESS_KEY = core.getInput("aws_secret_access_key");
-  const AWS_REGION = core.getInput("aws_region");
-  const PARAMETERS = core.getInput("parameters");
+async function createChangeSet(inputs) {
+  const {
+    awsAccessKeyId,
+    awsRegion,
+    awsSecretAccessKey,
+    parameters,
+    stackName,
+    templateFile
+  } = inputs;
 
-  if (existsSync(TEMPLATE_FILE)) {
-    const file = await readFileSync(TEMPLATE_FILE);
+  if (existsSync(templateFile)) {
+    const file = await readFileSync(templateFile);
 
     const cfn = new CloudFormation({
-      accessKeyId: AWS_ACCESS_KEY_ID,
-      secretAccessKey: AWS_SECRET_ACCESS_KEY,
-      region: AWS_REGION
+      accessKeyId: awsAccessKeyId,
+      secretAccessKey: awsSecretAccessKey,
+      region: awsRegion
     });
 
     let params = {
       Capabilities: ["CAPABILITY_IAM"],
       ChangeSetType: "CREATE",
-      ChangeSetName: `${STACK_NAME}-${uuidV4()}`,
-      StackName: STACK_NAME,
+      ChangeSetName: `${stackName}-${uuidV4()}`,
+      StackName: stackName,
       TemplateBody: file.toString(),
       Parameters: []
     };
 
-    if (PARAMETERS && PARAMETERS.trim() !== "") {
-      const keyValues = PARAMETERS.split(",");
+    if (parameters && parameters.trim() !== "") {
+      const keyValues = parameters.split(",");
 
       keyValues.forEach(kv => {
         const values = kv.split("=");
@@ -45,43 +46,47 @@ async function createChangeSet() {
 
     return { id: Id, name: params.ChangeSetName };
   } else {
-    throw new Error(`${TEMPLATE_FILE} not found`);
+    throw new Error(`${templateFile} not found`);
   }
 }
 
-async function executeChangeSet() {
-  const STACK_NAME = core.getInput("stack_name");
-  const CHANGESET_NAME = core.getInput("changeset_name");
-  const AWS_ACCESS_KEY_ID = core.getInput("aws_access_key_id");
-  const AWS_SECRET_ACCESS_KEY = core.getInput("aws_secret_access_key");
-  const AWS_REGION = core.getInput("aws_region");
+async function executeChangeSet(inputs) {
+  const {
+    awsAccessKeyId,
+    awsRegion,
+    awsSecretAccessKey,
+    changeSetName,
+    stackName
+  } = inputs;
 
   const cfn = new CloudFormation({
-    accessKeyId: AWS_ACCESS_KEY_ID,
-    secretAccessKey: AWS_SECRET_ACCESS_KEY,
-    region: AWS_REGION
+    accessKeyId: awsAccessKeyId,
+    secretAccessKey: awsSecretAccessKey,
+    region: awsRegion
   });
 
   await cfn
-    .executeChangeSet({ ChangeSetName: CHANGESET_NAME, StackName: STACK_NAME })
+    .executeChangeSet({ ChangeSetName: changeSetName, StackName: stackName })
     .promise();
 }
 
-async function deleteChangeSet() {
-  const STACK_NAME = core.getInput("stack_name");
-  const CHANGESET_NAME = core.getInput("changeset_name");
-  const AWS_ACCESS_KEY_ID = core.getInput("aws_access_key_id");
-  const AWS_SECRET_ACCESS_KEY = core.getInput("aws_secret_access_key");
-  const AWS_REGION = core.getInput("aws_region");
+async function deleteChangeSet(inputs) {
+  const {
+    awsAccessKeyId,
+    awsRegion,
+    awsSecretAccessKey,
+    changeSetName,
+    stackName
+  } = inputs;
 
   const cfn = new CloudFormation({
-    accessKeyId: AWS_ACCESS_KEY_ID,
-    secretAccessKey: AWS_SECRET_ACCESS_KEY,
-    region: AWS_REGION
+    accessKeyId: awsAccessKeyId,
+    secretAccessKey: awsSecretAccessKey,
+    region: awsRegion
   });
 
   await cfn
-    .deleteChangeSet({ ChangeSetName: CHANGESET_NAME, StackName: STACK_NAME })
+    .deleteChangeSet({ ChangeSetName: changeSetName, StackName: stackName })
     .promise();
 }
 

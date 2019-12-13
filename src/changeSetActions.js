@@ -49,6 +49,24 @@ async function createChangeSet() {
   }
 }
 
+async function executeChangeSet() {
+  const STACK_NAME = core.getInput("stack_name");
+  const CHANGESET_NAME = core.getInput("changeset_name");
+  const AWS_ACCESS_KEY_ID = core.getInput("aws_access_key_id");
+  const AWS_SECRET_ACCESS_KEY = core.getInput("aws_secret_access_key");
+  const AWS_REGION = core.getInput("aws_region");
+
+  const cfn = new CloudFormation({
+    accessKeyId: AWS_ACCESS_KEY_ID,
+    secretAccessKey: AWS_SECRET_ACCESS_KEY,
+    region: AWS_REGION
+  });
+
+  await cfn
+    .executeChangeSet({ ChangeSetName: CHANGESET_NAME, StackName: STACK_NAME })
+    .promise();
+}
+
 async function deleteChangeSet() {
   const STACK_NAME = core.getInput("stack_name");
   const CHANGESET_NAME = core.getInput("changeset_name");
@@ -69,5 +87,6 @@ async function deleteChangeSet() {
 
 module.exports = {
   createChangeSet,
-  deleteChangeSet
+  deleteChangeSet,
+  executeChangeSet
 };

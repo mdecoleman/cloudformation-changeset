@@ -1,12 +1,10 @@
 # CloudFormation Change Set
 
-GitHub Action that creates, updates, deletes and applies CloudFormation change sets.
-
-# Methods
-
-Currently only `create` change set is implemented
+GitHub Action that creates, deletes and executes CloudFormation change sets.
 
 # Usage
+
+## Create
 
 ```yaml
 - uses: mdecoleman/cloudformation-changeset@v1
@@ -18,6 +16,32 @@ Currently only `create` change set is implemented
     aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     aws_region: "eu-west-1"
     parameters: Runtime=nodejs8.10,Role=arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+```
+
+## Delete
+
+```yaml
+- uses: mdecoleman/cloudformation-changeset@v1
+  with:
+    method: delete
+    stack_name: "some-stack"
+    changeset_name: "some-changeset-name"
+    aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    aws_region: "eu-west-1"
+```
+
+## Execute
+
+```yaml
+- uses: mdecoleman/cloudformation-changeset@v1
+  with:
+    method: execute
+    stack_name: "some-stack"
+    changeset_name: "some-changeset-name"
+    aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    aws_region: "eu-west-1"
 ```
 
 For documentation of available inputs and outputs see [action.yml](action.yml)

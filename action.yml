@@ -1,5 +1,5 @@
 name: "CloudFormation Change Set"
-description: "GitHub Action that creates, updates, deletes and applies CloudFormation change sets"
+description: "GitHub Action that creates, deletes and executes CloudFormation change sets"
 inputs:
   method:
     description: "The action type"

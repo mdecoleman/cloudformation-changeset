@@ -1,9 +1,9 @@
-const core = require("@actions/core");
-const CloudFormation = require("aws-sdk/clients/cloudformation");
 const { existsSync, readFileSync } = require("fs");
+const CloudFormation = require("aws-sdk/clients/cloudformation");
+const core = require("@actions/core");
 const uuidV4 = require("uuid/v4");
 
-async function create() {
+async function createChangeSet() {
   const STACK_NAME = core.getInput("stack_name");
   const TEMPLATE_FILE = core.getInput("template_file");
   const AWS_ACCESS_KEY_ID = core.getInput("aws_access_key_id");
@@ -41,29 +41,33 @@ async function create() {
       });
     }
 
-    const response = await cfn.createChangeSet(params).promise();
+    const { Id } = await cfn.createChangeSet(params).promise();
 
-    core.setOutput("changeset_id", response.Id);
+    return { id: Id, name: params.ChangeSetName };
   } else {
-    core.setFailed(`${TEMPLATE_FILE} not found`);
+    throw new Error(`${TEMPLATE_FILE} not found`);
   }
 }
 
-async function run() {
-  try {
-    const METHOD = core.getInput("method");
+async function deleteChangeSet() {
+  const STACK_NAME = core.getInput("stack_name");
+  const CHANGESET_NAME = core.getInput("changeset_name");
+  const AWS_ACCESS_KEY_ID = core.getInput("aws_access_key_id");
+  const AWS_SECRET_ACCESS_KEY = core.getInput("aws_secret_access_key");
+  const AWS_REGION = core.getInput("aws_region");
 
-    switch (METHOD) {
-      case "create":
-        create();
-        break;
-      default:
-        core.setFailed(`method ${METHOD} not supported`);
-    }
-  } catch (error) {
-    core.error(error);
-    core.setFailed(error.message);
-  }
+  const cfn = new CloudFormation({
+    accessKeyId: AWS_ACCESS_KEY_ID,
+    secretAccessKey: AWS_SECRET_ACCESS_KEY,
+    region: AWS_REGION
+  });
+
+  await cfn
+    .deleteChangeSet({ ChangeSetName: CHANGESET_NAME, StackName: STACK_NAME })
+    .promise();
 }
 
-module.exports = run;
+module.exports = {
+  createChangeSet,
+  deleteChangeSet
+};

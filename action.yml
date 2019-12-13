@@ -18,13 +18,18 @@ inputs:
     required: true
   template_file:
     description: "Path to CloudFormation template"
-    required: true
+    required: false
   parameters:
     description: Parameters for the template
+    required: false
+  changeset_name:
+    description: Name of changeset
     required: false
 outputs:
   changeset_id:
     description: "The changeset id"
+  changeset_name:
+    description: "The changeset name"
 runs:
   using: "node12"
   main: "dist/index.js"

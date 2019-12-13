@@ -9,8 +9,8 @@ Currently only `CREATE` change set is implemented
 # Usage
 
 ```yaml
-- uses: mdecoleman/cloudformation-create-changeset@1.0.0
-  id: vars
+- uses: mdecoleman/cloudformation-changeset@v1
+  id: cfn
   with:
     METHOD: CREATE
     STACK_NAME: "some-stack-name"
@@ -18,7 +18,7 @@ Currently only `CREATE` change set is implemented
     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     AWS_REGION: "eu-west-1"
     TEMPLATE_FILE: "./path/to/template.yml"
-- run: echo ${{ steps.vars.outputs.changeset_id }}
+- run: echo ${{ steps.cfn.outputs.changeset_id }}
 ```
 
 # License

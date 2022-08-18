@@ -24,7 +24,7 @@
   "author": "Matthew Coleman <matthewdecoleman@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.2.0",
+    "@actions/core": "^1.9.1",
     "aws-sdk": "^2.586.0",
     "uuid": "^3.3.3"
   },

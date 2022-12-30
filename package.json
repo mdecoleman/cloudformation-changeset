@@ -31,7 +31,7 @@
   "devDependencies": {
     "@zeit/ncc": "^0.20.5",
     "dotenv": "^8.2.0",
-    "mocha": "^6.2.2",
+    "mocha": "^10.2.0",
     "should": "^13.2.3",
     "sinon": "^7.5.0"
   }
